@@ -30,6 +30,7 @@ RUN set -ex \
     && apt-get update \
     && apt-get install software-properties-common -y --no-install-recommends \
     && apt-add-repository ppa:git-core/ppa \
+	&& apt-add-repository ppa:brightbox/ruby-ng \
     && apt-get update \
     && apt-get install git=1:2.* -y --no-install-recommends \
     && git version \
@@ -59,8 +60,14 @@ RUN set -ex \
        libunistring0=0.9.* libxml2-utils=2.9.* libyaml-perl=0.84-* python-bzrlib=2.6.* python-configobj=4.7.* \
        sgml-base=1.26+* sgml-data=2.0.* subversion=1.8.* tcl=8.6.* tcl8.6=8.6.* xml-core=0.13+* xmlto=0.0.* xsltproc=1.1.* python3-pip \
        tk=8.6.* gettext=0.18.* gettext-base=0.18.* libapr1=1.5.* libaprutil1=1.5.* libasprintf0c2=0.18.*  \
+	&& curl -sL https://deb.nodesource.com/setup_8.x | sudo bash - \
+	&& apt-get install -y --no-install-recommends \
+	   nodejs ruby2.5 ruby2.5-dev ruby-dev gcc rpm \
     && rm -rf /var/lib/apt/lists/* \
-    && apt-get clean
+    && apt-get clean \
+	&& npm config set strict-ssl false \
+	&& npm i -g yarn \
+	&& gem install fpm
 
 # Download and set up GitVersion
 RUN set -ex \
